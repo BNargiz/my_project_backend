@@ -1,6 +1,7 @@
-import { Router } from "express";
+const { Router } = require("express");
 
 const router = new Router();
+const Activities = require("../models").activity;
 
 /* router.post = 
 
@@ -11,3 +12,24 @@ const router = new Router();
 
 
 */
+
+router.get("/", async (request, response, next) => {
+  try {
+    const activities = await Activities.findAll();
+    response.send(activities);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+router.get("/:id", async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    const activity = await Activities.findByPk(id);
+    response.send(activity);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+module.exports = router;
