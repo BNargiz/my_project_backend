@@ -23,27 +23,39 @@ router.get("/", async (request, response, next) => {
   }
 });
 
-router.get("/user", authMiddleWare, async (req, res) => {
-  try {
-    const activities = await Activities.findAll({
-      where: {
-        userId: req.user.id,
-      },
-    });
+// router.get("/user", authMiddleWare, async (req, res) => {
+//   try {
+//     const activities = await Activities.findAll({
+//       where: {
+//         userId: req.user.id,
+//       },
+//     });
 
-    console.log(activities);
+//     console.log(activities);
 
-    res.status(200).send(activities);
-  } catch (err) {
-    res.status(500).send(err);
-  }
-});
+//     res.status(200).send(activities);
+//   } catch (err) {
+//     res.status(500).send(err);
+//   }
+// });
 
 router.get("/:id", async (request, response, next) => {
   try {
     const { id } = request.params;
     const activity = await Activities.findByPk(id);
     response.send(activity);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+router.delete("/delete/:id", async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    const activity = await Activities.findByPk(id);
+    const destroyedActivity = await activity.destroy();
+    response.send({ message: "Activity deleted", destroyedActivity });
   } catch (error) {
     console.log(error);
     next(error);
