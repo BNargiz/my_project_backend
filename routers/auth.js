@@ -3,6 +3,7 @@ const { Router } = require("express");
 const { toJWT } = require("../auth/jwt");
 const authMiddleware = require("../auth/middleware");
 const User = require("../models/").user;
+const Activities = require("../models").activity;
 const { SALT_ROUNDS } = require("../config/constants");
 
 const router = new Router();
@@ -17,7 +18,10 @@ router.post("/login", async (req, res, next) => {
         .send({ message: "Please provide both email and password" });
     }
 
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findOne({
+      where: { email },
+      include: [Activities],
+    });
 
     if (!user || !bcrypt.compareSync(password, user.password)) {
       return res.status(400).send({
@@ -46,12 +50,16 @@ router.post("/signup", async (req, res) => {
       password: bcrypt.hashSync(password, SALT_ROUNDS),
       name,
     });
+    const user = await User.findByPk(newUser.id, {
+      where: { email },
+      include: [Activities],
+    });
 
     delete newUser.dataValues["password"]; // don't send back the password hash
 
     const token = toJWT({ userId: newUser.id });
 
-    res.status(201).json({ token, user: newUser.dataValues });
+    res.status(201).json({ token, user });
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
       return res
@@ -68,8 +76,11 @@ router.post("/signup", async (req, res) => {
 // - checking if a token is (still) valid
 router.get("/me", authMiddleware, async (req, res) => {
   // don't send back the password hash
+  const user = await User.findByPk(req.user.id, {
+    include: [Activities],
+  });
   delete req.user.dataValues["password"];
-  res.status(200).send({ ...req.user.dataValues });
+  res.status(200).send(user);
 });
 
 module.exports = router;

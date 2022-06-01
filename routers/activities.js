@@ -1,5 +1,5 @@
 const { Router } = require("express");
-
+const authMiddleWare = require("../auth/middleware");
 const router = new Router();
 const Activities = require("../models").activity;
 
@@ -22,6 +22,23 @@ router.get("/", async (request, response, next) => {
     next(error);
   }
 });
+
+router.get("/user", authMiddleWare, async (req, res) => {
+  try {
+    const activities = await Activities.findAll({
+      where: {
+        userId: req.user.id,
+      },
+    });
+
+    console.log(activities);
+
+    res.status(200).send(activities);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 router.get("/:id", async (request, response, next) => {
   try {
     const { id } = request.params;
