@@ -61,4 +61,53 @@ router.delete("/delete/:id", async (request, response, next) => {
     next(error);
   }
 });
+
+router.post("/:id/post", authMiddleWare, async (request, response, next) => {
+  try {
+    const user = request.user;
+    const {
+      title,
+      description,
+      location,
+      price,
+      imageUrl,
+      email,
+      phone,
+      date,
+      ageRange,
+    } = request.body;
+
+    if (
+      !title ||
+      !description ||
+      !imageUrl ||
+      !location ||
+      !email ||
+      !phone ||
+      !date ||
+      !ageRange
+    ) {
+      return response.status(400).send("Please provide all information");
+    }
+
+    const newActivity = await Activities.create({
+      title,
+      description,
+      location,
+      price: 0,
+      imageUrl,
+      email,
+      phone,
+      date,
+      ageRange,
+      userId: user.id,
+    });
+
+    response.status(200).send(newActivity);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
 module.exports = router;

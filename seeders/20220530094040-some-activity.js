@@ -42,7 +42,7 @@ module.exports = {
           email: "Daniella@gmail.com",
           phone: "65744677",
           date: "2022-07-30",
-          ageRange: "school-aged child",
+          ageRange: "school-age",
           longitude: 4.895168,
           latitude: 52.370216,
           userId: 1,
