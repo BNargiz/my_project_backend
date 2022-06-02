@@ -2,6 +2,7 @@ const { Router } = require("express");
 const authMiddleWare = require("../auth/middleware");
 const router = new Router();
 const Activities = require("../models").activity;
+const User = require("../models").user;
 
 /* router.post = 
 
@@ -64,48 +65,68 @@ router.delete("/delete/:id", async (request, response, next) => {
 
 router.post("/:id/post", authMiddleWare, async (request, response, next) => {
   try {
+    console.log("hello");
     const user = request.user;
     const {
       title,
       description,
       location,
       price,
-      imageUrl,
+      image,
       email,
       phone,
       date,
-      ageRange,
+      age,
+      longitude,
+      latitude,
     } = request.body;
+    console.log(
+      title,
+      description,
+      location,
+      price,
+      image,
+      email,
+      phone,
+      date,
+      age,
+      longitude,
+      latitude
+    );
 
     if (
       !title ||
       !description ||
-      !imageUrl ||
+      !image ||
       !location ||
       !email ||
       !phone ||
       !date ||
-      !ageRange
+      !age
     ) {
       return response.status(400).send("Please provide all information");
     }
+    // const { id } = request.params;
+    // const user = await User.findByPk(id);
 
     const newActivity = await Activities.create({
       title,
       description,
       location,
       price: 0,
-      imageUrl,
+      imageUrl: image,
       email,
       phone,
       date,
-      ageRange,
+      ageRange: age,
+      longitude,
+      latitude,
       userId: user.id,
     });
 
     response.status(200).send(newActivity);
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     next(error);
   }
 });
