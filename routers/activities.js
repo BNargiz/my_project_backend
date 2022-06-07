@@ -80,19 +80,6 @@ router.post("/:id/post", authMiddleWare, async (request, response, next) => {
       longitude,
       latitude,
     } = request.body;
-    console.log(
-      title,
-      description,
-      location,
-      price,
-      image,
-      email,
-      phone,
-      date,
-      age,
-      longitude,
-      latitude
-    );
 
     if (
       !title ||
@@ -127,6 +114,46 @@ router.post("/:id/post", authMiddleWare, async (request, response, next) => {
     response.status(200).send(newActivity);
   } catch (error) {
     console.log(error.message);
+    next(error);
+  }
+});
+router.patch("/modify/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const post = await Activities.findByPk(id);
+
+    const {
+      title,
+      description,
+      location,
+      price,
+      imageUrl,
+      email,
+      phone,
+      date,
+      ageRange,
+      longitude,
+      latitude,
+    } = req.body;
+    console.log("------------------", req.body);
+
+    const modifiedActivity = await post.update({
+      title,
+      description,
+      location,
+      price,
+      imageUrl,
+      email,
+      phone,
+      date,
+      ageRange,
+      longitude,
+      latitude,
+    });
+
+    res.status(200).send(modifiedActivity);
+  } catch (error) {
+    console.log(error);
     next(error);
   }
 });
