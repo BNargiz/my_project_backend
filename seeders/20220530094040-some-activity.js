@@ -87,6 +87,25 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+
+        {
+          title: "Eden and the Golden Rule",
+          description:
+            " Eden and the Golden Rule is a VR experience for young and old, for anyone who wants to look at the world through Virtual Reality glasses. Experience it in the Jewish Historical Museum in Amsterdam!",
+          location: "Amsterdam",
+          price: 35,
+          imageUrl:
+            "https://cms.jck.nl/sites/default/files/2021-07/header2.png",
+          email: "service@jck.nl",
+          phone: "0205310310",
+          date: "2022-08-24",
+          ageRange: "all-ages",
+          longitude: 4.90391,
+          latitude: 52.36737,
+          userId: 1,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );
