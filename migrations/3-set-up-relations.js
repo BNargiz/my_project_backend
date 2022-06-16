@@ -18,6 +18,16 @@ module.exports = {
       onUpdate: "CASCADE",
       onDelete: "SET NULL",
     });
+
+    await queryInterface.addColumn("reviews", "activityId", {
+      type: Sequelize.INTEGER,
+      references: {
+        model: "activities",
+        key: "id",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "SET NULL",
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -28,5 +38,6 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
     await queryInterface.removeColumn("activities", "userId");
+    await queryInterface.removeColumn("reviews", "activityId");
   },
 };

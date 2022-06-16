@@ -78,7 +78,7 @@ module.exports = {
           price: 0,
           imageUrl:
             "https://www.rotterdamfestivals.nl/uploads/2017/05/erik_van_t_hof_parade_rotterdam_dsc8935.jpg_2014_61308.png",
-          email: "https://deparade.nl/",
+          email: "infodeparade@gmail.com",
           phone: "+31(0)202386393",
           date: "2022-06-26",
           ageRange: "all-ages",
@@ -97,7 +97,7 @@ module.exports = {
           price: 35,
           imageUrl:
             "https://cms.jck.nl/sites/default/files/2021-07/header2.png",
-          email: "service@jck.nl",
+          email: "infoservice@jck.nl",
           phone: "+31 6 20531031",
           date: "2022-08-24",
           ageRange: "all-ages",
